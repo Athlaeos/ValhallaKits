@@ -65,7 +65,7 @@ public class KitCooldownManager {
                 if (args.length >= 2){
                     try {
                         long cd = Long.parseLong(args[1]);
-                        Kit kit = KitManager.getInstance().getKits().get(args[0]);
+                        Kit kit = KitManager.getRegisteredKits().get(args[0]);
                         if (kit == null) continue;
                         requirements.put(kit.getName(), new CooldownInstance(kit.getName(), cd));
                     } catch (IllegalArgumentException ignored){

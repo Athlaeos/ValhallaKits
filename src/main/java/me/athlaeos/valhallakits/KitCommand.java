@@ -1,10 +1,8 @@
 package me.athlaeos.valhallakits;
 
 import me.athlaeos.valhallakits.config.ConfigManager;
-import me.athlaeos.valhallakits.menus.KitEditingMenu;
-import me.athlaeos.valhallakits.menus.KitSelectionMenu;
 import me.athlaeos.valhallakits.menus.PlayerKitSelectionMenu;
-import me.athlaeos.valhallakits.menus.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
@@ -45,7 +43,7 @@ public class KitCommand implements TabExecutor {
             return true;
         }
         if (args.length >= 1){
-            Kit kit = KitManager.getInstance().getKits().get(args[0]);
+            Kit kit = KitManager.getRegisteredKits().get(args[0]);
             if (kit == null){
                 sender.sendMessage(Utils.chat(error_kit_not_found));
                 return true;
@@ -89,7 +87,7 @@ public class KitCommand implements TabExecutor {
                 }
             }
         } else {
-            new PlayerKitSelectionMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility((Player) sender)).open();
+            new PlayerKitSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) sender)).open();
         }
         return true;
     }
@@ -97,7 +95,7 @@ public class KitCommand implements TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (args.length == 1){
-            return new ArrayList<>(KitManager.getInstance().getKits().keySet());
+            return new ArrayList<>(KitManager.getRegisteredKits().keySet());
         }
         return null;
     }

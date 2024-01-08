@@ -3,7 +3,6 @@ package me.athlaeos.valhallakits;
 import me.athlaeos.valhallakits.config.ConfigUpdater;
 import me.athlaeos.valhallakits.hooks.KitsPlaceholderExpansion;
 import me.athlaeos.valhallakits.hooks.VaultHook;
-import me.athlaeos.valhallakits.menus.MenuListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -26,13 +25,12 @@ public final class ValhallaKits extends JavaPlugin {
         // Plugin startup logic
         new KitsCommand();
         new KitCommand();
-        getServer().getPluginManager().registerEvents(new MenuListener(), this);
         saveAndUpdateConfig("config.yml");
         saveConfig("kits.yml");
 
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
-        KitManager.getInstance().loadKits();
+        KitManager.registerKitsFromFile(new File(getDataFolder(), "/kits.json"));
         if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new KitsPlaceholderExpansion().register();
         }
@@ -41,7 +39,7 @@ public final class ValhallaKits extends JavaPlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        KitManager.getInstance().saveKits();
+        KitManager.saveKits();
     }
 
     public static VaultHook getVaultHook() {

@@ -1,6 +1,8 @@
 package me.athlaeos.valhallakits;
 
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
+import me.athlaeos.valhallammo.item.ItemBuilder;
+import me.athlaeos.valhallammo.utility.ItemUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -138,29 +140,26 @@ public class Kit implements Cloneable{
     }
 
     public static class ValhallaKitEntry extends KitEntry{
-        private final List<DynamicItemModifier> modifiers;
+        private List<DynamicItemModifier> modifiers;
 
         public ValhallaKitEntry(String id, ItemStack i, List<DynamicItemModifier> modifiers) {
             super(id, i);
             this.modifiers = modifiers;
         }
 
-        public List<DynamicItemModifier> getModifiers() {
-            return modifiers;
+        public List<DynamicItemModifier> getModifiers() { return modifiers; }
+        public void setModifiers(List<DynamicItemModifier> modifiers) {
+            this.modifiers = modifiers;
+            DynamicItemModifier.sortModifiers(this.modifiers);
         }
 
         @Override
         public void giveItem(Player p){
-            ItemStack result = getItem().clone();
-            List<DynamicItemModifier> modifiers = new ArrayList<>(this.modifiers);
-            modifiers.sort(Comparator.comparingInt((DynamicItemModifier a) -> a.getPriority().getPriorityRating()));
-            for (DynamicItemModifier modifier : modifiers){
-                if (result == null) break;
-                result = modifier.processItem(p, result);
-            }
-            if (result != null){
-                Utils.giveItem(p, result);
-            }
+            ItemBuilder result = new ItemBuilder(getItem());
+            DynamicItemModifier.modify(result, p, modifiers, false, true, true);
+            ItemStack item = result.get();
+            if (ItemUtils.isEmpty(item)) return;
+            Utils.giveItem(p, item);
         }
     }
 }

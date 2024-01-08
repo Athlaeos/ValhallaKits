@@ -8,21 +8,22 @@ import me.athlaeos.valhallakits.config.ConfigManager;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class KitsPlaceholderExpansion extends PlaceholderExpansion {
     private static final String kit_unclaimable = ConfigManager.getInstance().getConfig("config.yml").get().getString("kit_unclaimable", "");
     @Override
-    public String getAuthor() {
+    public @NotNull String getAuthor() {
         return "Athlaeos";
     }
 
     @Override
-    public String getIdentifier() {
+    public @NotNull String getIdentifier() {
         return "valhallakits";
     }
 
     @Override
-    public String getVersion() {
+    public @NotNull String getVersion() {
         return "1.0";
     }
 
@@ -36,13 +37,13 @@ public class KitsPlaceholderExpansion extends PlaceholderExpansion {
         if (player.isOnline()){
             if(params.startsWith("kit_cooldown_timestamp1_")){
                 String kitName = params.replace("kit_cooldown_timestamp1_", "");
-                Kit kit = KitManager.getInstance().getKits().get(kitName);
+                Kit kit = KitManager.getRegisteredKits().get(kitName);
                 if (kit == null) return null;
                 long cooldown = KitCooldownManager.getInstance().getKitCooldown((Player) player, kit);
                 return cooldown >= 0 ? Utils.toTimeStamp(cooldown, 1000) : kit_unclaimable;
             } else if(params.startsWith("kit_cooldown_timestamp2_")){
                 String kitName = params.replace("kit_cooldown_timestamp2_", "");
-                Kit kit = KitManager.getInstance().getKits().get(kitName);
+                Kit kit = KitManager.getRegisteredKits().get(kitName);
                 if (kit == null) return null;
                 long cooldown = KitCooldownManager.getInstance().getKitCooldown((Player) player, kit);
                 return cooldown >= 0 ? Utils.msToTimestamp(cooldown) : kit_unclaimable;

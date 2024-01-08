@@ -27,7 +27,7 @@ public class Utils {
     public static String chat(String message) {
         char COLOR_CHAR = ChatColor.COLOR_CHAR;
         Matcher matcher = hexPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        StringBuilder buffer = new StringBuilder(message.length() + 4 * 8);
         while (matcher.find())
         {
             String group = matcher.group(1);

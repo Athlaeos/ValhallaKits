@@ -4,11 +4,11 @@ import me.athlaeos.valhallakits.Kit;
 import me.athlaeos.valhallakits.KitManager;
 import me.athlaeos.valhallakits.Utils;
 import me.athlaeos.valhallakits.ValhallaKits;
-import me.athlaeos.valhallammo.config.ConfigManager;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DuoArgDynamicItemModifier;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.TripleArgDynamicItemModifier;
-import me.athlaeos.valhallammo.menus.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,7 +21,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class KitEditingMenu extends Menu{
+public class KitEditingMenu extends Menu {
     private final NamespacedKey entryKey = new NamespacedKey(ValhallaKits.getPlugin(), "entry_key");
 
     private final Kit kit;
@@ -71,7 +71,7 @@ public class KitEditingMenu extends Menu{
                     if (!Utils.isItemEmptyOrNull(e.getCursor())){
                         kit.getItems().put(name, new Kit.ValhallaKitEntry(name, e.getCursor().clone(), new ArrayList<>()));
                     } else {
-                        new ValhallaKitEntryEditingMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, new Kit.ValhallaKitEntry(name, Utils.createItemStack(Material.WOODEN_SWORD, Utils.chat("&r&fPlace your own custom kit item here :)"), null), new ArrayList<>())).open();
+                        new ValhallaKitEntryEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, new Kit.ValhallaKitEntry(name, Utils.createItemStack(Material.WOODEN_SWORD, Utils.chat("&r&fPlace your own custom kit item here :)"), null), new ArrayList<>())).open();
                     }
                 } else {
                     if (!Utils.isItemEmptyOrNull(e.getCursor())){
@@ -79,13 +79,11 @@ public class KitEditingMenu extends Menu{
                     }
                 }
             } else if (clickedItem.equals(saveButton)){
-                KitManager.getInstance().getKits().put(kit.getName(), kit);
+                KitManager.getRegisteredKits().put(kit.getName(), kit);
                 new KitSelectionMenu(playerMenuUtility).open();
                 return;
             } else if (clickedItem.equals(deleteButton)){
-                KitManager.getInstance().getKits().remove(kit.getName());
-                ConfigManager.getInstance().getConfig("kits.yml").get().set(kit.getName(), null);
-                ConfigManager.getInstance().getConfig("kits.yml").save();
+                KitManager.getRegisteredKits().remove(kit.getName());
                 new KitSelectionMenu(playerMenuUtility).open();
                 return;
             } else {
@@ -98,7 +96,7 @@ public class KitEditingMenu extends Menu{
                         playerMenuUtility.getOwner().sendMessage(Utils.chat("&cItem has been removed"));
                     } else {
                         if (ValhallaKits.isValhallaHooked()){
-                            new ValhallaKitEntryEditingMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, entry).open();
+                            new ValhallaKitEntryEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, entry).open();
                         } else {
                             kit.getItems().remove(value);
                         }
@@ -128,39 +126,7 @@ public class KitEditingMenu extends Menu{
                     buttonLore.add(Utils.chat("&8&m                                 "));
                     buttonLore.add(Utils.chat("&fModifiers:"));
                     for (DynamicItemModifier modifier : ((Kit.ValhallaKitEntry) entry).getModifiers()){
-                        String craftDescription = modifier.getCraftDescription();
-                        if (craftDescription != null){
-                            if (!craftDescription.equals("")){
-                                if (modifier instanceof TripleArgDynamicItemModifier){
-                                    buttonLore.add(Utils.chat(craftDescription
-                                            .replace("%strength%", "" + Utils.round(modifier.getStrength(), 2))
-                                            .replace("%strength2%", "" + Utils.round(((TripleArgDynamicItemModifier) modifier).getStrength2(), 2))
-                                            .replace("%strength3%", "" + Utils.round(((TripleArgDynamicItemModifier) modifier).getStrength3(), 2))));
-                                } else if (modifier instanceof DuoArgDynamicItemModifier){
-                                    buttonLore.add(Utils.chat(craftDescription
-                                            .replace("%strength%", "" + Utils.round(modifier.getStrength(), 2))
-                                            .replace("%strength2%", "" + Utils.round(((DuoArgDynamicItemModifier) modifier).getStrength2(), 2))));
-                                } else {
-                                    buttonLore.add(Utils.chat(craftDescription.replace("%strength%", "" + Utils.round(modifier.getStrength(), 2))));
-                                }
-                            } else {
-                                if (modifier instanceof TripleArgDynamicItemModifier){
-                                    buttonLore.add(Utils.chat("&f- &e" + modifier.getName() + " : " +
-                                            Utils.round(modifier.getStrength(), 2) + ", " +
-                                            Utils.round(((DuoArgDynamicItemModifier) modifier).getStrength2(), 2) + ", " +
-                                            Utils.round(((TripleArgDynamicItemModifier) modifier).getStrength3(), 2)));
-                                } else if (modifier instanceof DuoArgDynamicItemModifier){
-                                    buttonLore.add(Utils.chat(craftDescription
-                                            .replace("%strength%", "" + Utils.round(modifier.getStrength(), 2))
-                                            .replace("%strength2%", "" + Utils.round(((DuoArgDynamicItemModifier) modifier).getStrength2(), 2))));
-                                    buttonLore.add(Utils.chat("&f- &e" + modifier.getName() + " : " +
-                                            Utils.round(modifier.getStrength(), 2) + ", " +
-                                            Utils.round(((DuoArgDynamicItemModifier) modifier).getStrength2(), 2)));
-                                } else {
-                                    buttonLore.add(Utils.chat("&f- &e" + modifier.getName() + " : " + Utils.round(modifier.getStrength(), 2)));
-                                }
-                            }
-                        }
+                        buttonLore.addAll(StringUtils.separateStringIntoLines(Utils.chat("&f> " + modifier.getActiveDescription()), 40));
                     }
                 }
 

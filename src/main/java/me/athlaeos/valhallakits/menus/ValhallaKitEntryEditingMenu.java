@@ -3,9 +3,11 @@ package me.athlaeos.valhallakits.menus;
 import me.athlaeos.valhallakits.Kit;
 import me.athlaeos.valhallakits.Utils;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.menus.DynamicModifierMenu;
-import me.athlaeos.valhallammo.menus.Menu;
-import me.athlaeos.valhallammo.menus.PlayerMenuUtility;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
+import me.athlaeos.valhallammo.gui.SetModifiersMenu;
+import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -18,7 +20,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-public class ValhallaKitEntryEditingMenu extends Menu {
+public class ValhallaKitEntryEditingMenu extends Menu implements SetModifiersMenu {
     private final Kit.KitEntry entry;
     private final Kit editingKit;
     private final ItemStack dynamicModifierButton = Utils.createItemStack(Material.BOOK, Utils.chat("&aDynamic Item Modifiers"), Arrays.asList(
@@ -30,13 +32,12 @@ public class ValhallaKitEntryEditingMenu extends Menu {
     private final ItemStack saveButton = Utils.createItemStack(Material.STRUCTURE_VOID, Utils.chat("&a&lSave Drop"), null);
     private final ItemStack deleteButton = Utils.createItemStack(Material.BARRIER, Utils.chat("&c&lDelete Drop"), null);
     private ItemStack drop;
-    private final List<DynamicItemModifier> currentModifiers;
+    private List<DynamicItemModifier> currentModifiers;
 
     public ValhallaKitEntryEditingMenu(PlayerMenuUtility playerMenuUtility, Kit editingKit, Kit.KitEntry entry) {
         super(playerMenuUtility);
         // This menu can only occur if ValhallaMMO is hooked and therefore all kit entries are valhalla entries
 
-        assert entry instanceof Kit.ValhallaKitEntry;
         this.entry = entry;
         this.editingKit = editingKit;
         this.drop = entry.getItem();
@@ -63,15 +64,15 @@ public class ValhallaKitEntryEditingMenu extends Menu {
         if (!Utils.isItemEmptyOrNull(clickedItem)){
             if (clickedItem.equals(dynamicModifierButton)){
                 playerMenuUtility.setPreviousMenu(this);
-                new DynamicModifierMenu(playerMenuUtility, this.currentModifiers).open();
+                new DynamicModifierMenu(playerMenuUtility, this).open();
                 return;
             } else if (clickedItem.equals(deleteButton)){
                 editingKit.getItems().remove(entry.getId());
-                new KitEditingMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
+                new KitEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
                 return;
             } else if (clickedItem.equals(saveButton)){
                 editingKit.getItems().put(entry.getId(), new Kit.ValhallaKitEntry(entry.getId(), drop, currentModifiers));
-                new KitEditingMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
+                new KitEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
                 return;
             } else if (clickedItem.equals(drop)) {
                 if (!Utils.isItemEmptyOrNull(e.getCursor())){
@@ -107,5 +108,15 @@ public class ValhallaKitEntryEditingMenu extends Menu {
         inventory.setItem(24, dynamicModifierButton);
         inventory.setItem(36, deleteButton);
         inventory.setItem(44, saveButton);
+    }
+
+    @Override
+    public void setResultModifiers(List<DynamicItemModifier> list) {
+        this.currentModifiers = list;
+    }
+
+    @Override
+    public List<DynamicItemModifier> getResultModifiers() {
+        return currentModifiers;
     }
 }

@@ -3,7 +3,7 @@ package me.athlaeos.valhallakits;
 import me.athlaeos.valhallakits.config.ConfigManager;
 import me.athlaeos.valhallakits.menus.KitEditingMenu;
 import me.athlaeos.valhallakits.menus.KitSelectionMenu;
-import me.athlaeos.valhallakits.menus.PlayerMenuUtilManager;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class KitsCommand implements TabExecutor {
@@ -107,7 +106,7 @@ public class KitsCommand implements TabExecutor {
                     sender.sendMessage(Utils.chat(error_player_not_found));
                     return true;
                 }
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -131,7 +130,7 @@ public class KitsCommand implements TabExecutor {
                     sender.sendMessage(Utils.chat(error_player_not_found));
                     return true;
                 }
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -148,7 +147,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("setpermission")){ // /kits setpermission <kit> <permission>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -165,7 +164,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("setcooldown")){ // /kits setcooldown <kit> <cooldown in milliseconds>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -196,7 +195,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("setmodeldata")){ // /kits setmodeldata <kit> <model data>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -215,7 +214,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("seticon")){ // /kits seticon <kit> <icon>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -234,7 +233,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("setprice")){ // /kits setprice <kit> <cost>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -256,22 +255,22 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("create")){ // /kits create <kitname>
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit != null){
                     sender.sendMessage(Utils.chat(error_kit_already_exists));
                     return true;
                 }
                 Kit newKit = new Kit(args[1], -1, "valhallakits.allkits", 0, args[1], "", new HashSet<>(), new HashMap<>());
-                KitManager.getInstance().getKits().put(newKit.getName(), newKit);
+                KitManager.getRegisteredKits().put(newKit.getName(), newKit);
                 if (sender instanceof Player){
-                    new KitEditingMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility((Player) sender), newKit).open();
+                    new KitEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) sender), newKit).open();
                     sender.sendMessage(Utils.chat(status_kit_created));
                 } else {
                     sender.sendMessage(Utils.chat("&cKit is created, but since you're not a player you can't edit it. Use &4/kits edit &cingame to edit your kit"));
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("addcommand")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -283,7 +282,7 @@ public class KitsCommand implements TabExecutor {
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("setdisplayname")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -298,7 +297,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("setdescription")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -313,7 +312,7 @@ public class KitsCommand implements TabExecutor {
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("removecommand")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -335,7 +334,7 @@ public class KitsCommand implements TabExecutor {
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("clearcommands")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null){
                     sender.sendMessage(Utils.chat(error_kit_not_found));
                     return true;
@@ -348,7 +347,7 @@ public class KitsCommand implements TabExecutor {
             if (args.length == 1){
                 if (args[0].equalsIgnoreCase("edit")){ // /kits edit
                     if (sender instanceof Player){
-                        new KitSelectionMenu(PlayerMenuUtilManager.getInstance().getPlayerMenuUtility((Player) sender)).open();
+                        new KitSelectionMenu(PlayerMenuUtilManager.getPlayerMenuUtility((Player) sender)).open();
                     } else {
                         sender.sendMessage(Utils.chat("&cYou must be a player to edit kits"));
                     }
@@ -367,7 +366,7 @@ public class KitsCommand implements TabExecutor {
         }
         if (args.length == 2){
             if (Arrays.asList("give", "setprice", "setdisplayname", "setdescription", "seticon", "setmodeldata", "setpermission", "setcooldown", "resetcooldown", "addcommand", "removecommand", "clearcommands").contains(args[0])){
-                return new ArrayList<>(KitManager.getInstance().getKits().keySet());
+                return new ArrayList<>(KitManager.getRegisteredKits().keySet());
             }
         }
         if (args.length == 3){
@@ -379,7 +378,7 @@ public class KitsCommand implements TabExecutor {
                     return validSuffixes.stream().map(s -> args[2] + s).collect(Collectors.toList());
                 }
             } else if (args[0].equalsIgnoreCase("removecommand")){
-                Kit kit = KitManager.getInstance().getKits().get(args[1]);
+                Kit kit = KitManager.getRegisteredKits().get(args[1]);
                 if (kit == null) return Collections.singletonList("invalid_kit");
                 return kit.getCommands().stream().map(String::trim).map(s -> s.replace(" ", "")).distinct().collect(Collectors.toList());
             } else if (args[0].equalsIgnoreCase("seticon")){

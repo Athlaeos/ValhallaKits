@@ -4,6 +4,8 @@ import me.athlaeos.valhallakits.Kit;
 import me.athlaeos.valhallakits.KitManager;
 import me.athlaeos.valhallakits.Utils;
 import me.athlaeos.valhallakits.ValhallaKits;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,7 +20,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class KitSelectionMenu extends Menu{
+public class KitSelectionMenu extends Menu {
     private final NamespacedKey kitKey = new NamespacedKey(ValhallaKits.getPlugin(), "kit_key");
     private int pageNumber = 1;
     private final ItemStack nextPageButton = Utils.createItemStack(Material.ARROW, Utils.chat("&fNext Page"), null);
@@ -49,7 +51,7 @@ public class KitSelectionMenu extends Menu{
             pageNumber++;
         } else if (e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(kitKey, PersistentDataType.STRING)){
             String kit = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(kitKey, PersistentDataType.STRING);
-            Kit chosenKit = KitManager.getInstance().getKits().get(kit);
+            Kit chosenKit = KitManager.getRegisteredKits().get(kit);
             if (chosenKit != null){
                 new KitEditingMenu(playerMenuUtility, chosenKit).open();
                 return;
@@ -71,7 +73,7 @@ public class KitSelectionMenu extends Menu{
         inventory.clear();
 
         List<ItemStack> kitButtons = new ArrayList<>();
-        for (Kit kit : KitManager.getInstance().getKits().values()){
+        for (Kit kit : KitManager.getRegisteredKits().values()){
             ItemStack button = new ItemStack(kit.getIcon());
             ItemMeta buttonMeta = button.getItemMeta();
             if (buttonMeta != null){

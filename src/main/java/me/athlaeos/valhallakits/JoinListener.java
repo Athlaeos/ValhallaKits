@@ -18,7 +18,7 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e){
         for (String kitName : joiningKits){
-            Kit kit = KitManager.getInstance().getKits().get(kitName);
+            Kit kit = KitManager.getRegisteredKits().get(kitName);
             if (kit != null){
                 if (KitCooldownManager.getInstance().isKitCooldownExpired(e.getPlayer(), kit)){
                     for (Kit.KitEntry entry : kit.getItems().values()){

@@ -2,12 +2,13 @@ package me.athlaeos.valhallakits.menus;
 
 import me.athlaeos.valhallakits.*;
 import me.athlaeos.valhallakits.config.ConfigManager;
+import me.athlaeos.valhallammo.gui.Menu;
+import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -20,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-public class PlayerKitSelectionMenu extends Menu{
+public class PlayerKitSelectionMenu extends Menu {
     private final List<String> kit_format = ConfigManager.getInstance().getConfig("config.yml").get().getStringList("kit_format");
     private final String kit_claimable = ConfigManager.getInstance().getConfig("config.yml").get().getString("kit_claimable", "");
     private final String kit_unclaimable = ConfigManager.getInstance().getConfig("config.yml").get().getString("kit_unclaimable", "");
@@ -64,7 +65,7 @@ public class PlayerKitSelectionMenu extends Menu{
         } else if (e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(kitKey, PersistentDataType.STRING)){
             String kitName = e.getCurrentItem().getItemMeta().getPersistentDataContainer().get(kitKey, PersistentDataType.STRING);
             Player who = playerMenuUtility.getOwner();
-            Kit kit = KitManager.getInstance().getKits().get(kitName);
+            Kit kit = KitManager.getRegisteredKits().get(kitName);
             if (kit != null){
                 if (kit.getPermissionRequired() != null){
                     if (!(who.hasPermission("valhallakits.allkits") || who.hasPermission(kit.getPermissionRequired()))){
@@ -128,7 +129,7 @@ public class PlayerKitSelectionMenu extends Menu{
         Player who = playerMenuUtility.getOwner();
 
         List<ItemStack> kitButtons = new ArrayList<>();
-        for (Kit kit : KitManager.getInstance().getKits().values()){
+        for (Kit kit : KitManager.getRegisteredKits().values()){
             if (kit.getPermissionRequired() == null || who.hasPermission(kit.getPermissionRequired()) || who.hasPermission("valhallakits.allkits")){
                 ItemStack button = new ItemStack(kit.getIcon());
                 ItemMeta buttonMeta = button.getItemMeta();
