@@ -139,4 +139,11 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/${repo.user}/valhallakits</url>
+        </repository>
+    </distributionManagement>
 </project>

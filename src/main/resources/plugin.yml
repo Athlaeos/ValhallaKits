@@ -1,7 +1,7 @@
 name: ValhallaKits
-version: '1.1'
+version: ${revision}
 main: me.athlaeos.valhallakits.ValhallaKits
-api-version: 1.16
+api-version: 1.19
 depend: [ ValhallaMMO ]
 softdepend: [ Vault ]
 authors: [ Athlaeos ]
