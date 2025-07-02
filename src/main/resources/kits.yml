@@ -1,0 +1,32 @@
+default:
+  permission_required: valhallakits.allkits
+  display_name: '&fChocolate Milk'
+  icon: COCOA_BEANS
+  model_data: -1
+  cooldown: -1
+  price: 0.0
+  commands: []
+  contents:
+    5a397ea7-473c-4432-96fc-c4ed5b08dcc0:
+      item:
+        ==: org.bukkit.inventory.ItemStack
+        v: 2586
+        type: POTION
+        meta:
+          ==: ItemMeta
+          meta-type: POTION
+          display-name: '{"extra":[{"italic":false,"color":"white","text":"Potion
+            of Chocolate Milk"}],"text":""}'
+          lore:
+            - '{"extra":[{"bold":false,"italic":false,"underlined":false,"strikethrough":false,"obfuscated":false,"color":"blue","text":"Chocolate
+            Milk "}],"text":""}'
+          ItemFlags:
+            - HIDE_POTION_EFFECTS
+          PublicBukkitValues:
+            valhallammo:valhalla_default_potion_effects: CHOCOLATE_MILK:0.0:0
+            valhallammo:valhalla_custom_potion_effects: CHOCOLATE_MILK:0.0:0
+          custom-color:
+            ==: Color
+            RED: 125
+            BLUE: 40
+            GREEN: 45

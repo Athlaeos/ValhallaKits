@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>me.athlaeos</groupId>
+    <artifactId>valhallakits</artifactId>
+    <version>${revision}</version>
+    <packaging>jar</packaging>
+
+    <name>ValhallaKits</name>
+
+    <description>Simple plugin allowing the creation and distribution of kits, supporting custom items and hooking with
+        ValhallaMMO to implement dynamic item modifiers
+    </description>
+    <properties>
+        <revision>2.1</revision>
+        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.5\plugins</testServerPath>
+
+        <outputDirectory>target</outputDirectory>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <repo.user>athlaeos</repo.user>
+    </properties>
+
+    <profiles>
+        <profile>
+            <id>exportToServer</id>
+            <properties>
+                <outputDirectory>${testServerPath}</outputDirectory>
+            </properties>
+        </profile>
+    </profiles>
+
+    <build>
+        <finalName>ValhallaKits_${revision}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <!-- use the same repo you declared in distributionManagement -->
+                    <repositoryId>${distributionManagement.repository.id}</repositoryId>
+                    <url>${distributionManagement.repository.url}</url>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <outputDirectory>${outputDirectory}</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <relocations>
+                    </relocations>
+                    <filters>
+                    </filters>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <phase>package</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/athlaeos/valhallammo</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.19-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.athlaeos</groupId>
+            <artifactId>valhallammo-dist</artifactId>
+            <version>dev-0.4</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+</project>

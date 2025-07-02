@@ -1,0 +1,22 @@
+name: ValhallaKits
+version: '1.1'
+main: me.athlaeos.valhallakits.ValhallaKits
+api-version: 1.16
+depend: [ ValhallaMMO ]
+softdepend: [ Vault ]
+authors: [ Athlaeos ]
+description: Simple plugin allowing the creation and distribution of kits, supporting custom items and hooking with ValhallaMMO to implement dynamic item modifiers
+commands:
+  valhallakits:
+    description: Base command for accessing kits and editing them
+    aliases: [ kits, vkits ]
+  valhallakit:
+    description: Base command for obtaining kits
+    aliases: [ kit, vkit ]
+permissions:
+  valhallakits.allkits:
+    default: op
+    description: The default permission all newly created kits have, this permission also grants access to all kits regardless of their permission set.
+  valhallakits.managekits:
+    default: op
+    description: The permission required to manage, create, and give kits
