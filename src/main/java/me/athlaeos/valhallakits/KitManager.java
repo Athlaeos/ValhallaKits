@@ -44,7 +44,7 @@ public class KitManager {
 
     public static void saveKits(){
         File f = new File(ValhallaKits.getPlugin().getDataFolder(), "/kits.json");
-        if (!f.exists()) ValhallaMMO.getInstance().saveResource("kits.json", false);
+        if (!f.exists()) ValhallaKits.getPlugin().save("kits.json");
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(f, StandardCharsets.UTF_8))){
             JsonElement element = gson.toJsonTree(new ArrayList<>(registeredKits.values()), new TypeToken<ArrayList<Kit>>(){}.getType());
             gson.toJson(element, writer);

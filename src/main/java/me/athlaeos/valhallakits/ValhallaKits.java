@@ -26,7 +26,7 @@ public final class ValhallaKits extends JavaPlugin {
         new KitsCommand();
         new KitCommand();
         saveAndUpdateConfig("config.yml");
-        saveConfig("kits.yml");
+        save("kits.json");
 
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
 
@@ -40,6 +40,11 @@ public final class ValhallaKits extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
         KitManager.saveKits();
+    }
+
+    public void save(String name){
+        File file = new File(this.getDataFolder(), name);
+        if (!file.exists()) this.saveResource(name, false);
     }
 
     public static VaultHook getVaultHook() {

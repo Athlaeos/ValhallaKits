@@ -125,7 +125,8 @@ public class KitEditingMenu extends Menu {
                 if (ValhallaKits.isValhallaHooked()){
                     buttonLore.add(Utils.chat("&8&m                                 "));
                     buttonLore.add(Utils.chat("&fModifiers:"));
-                    for (DynamicItemModifier modifier : ((Kit.ValhallaKitEntry) entry).getModifiers()){
+                    Kit.ValhallaKitEntry asValhallaEntry = entry instanceof Kit.ValhallaKitEntry ? (Kit.ValhallaKitEntry) entry : new Kit.ValhallaKitEntry(entry.getId(), entry.getItem(), new ArrayList<>());
+                    for (DynamicItemModifier modifier : asValhallaEntry.getModifiers()){
                         buttonLore.addAll(StringUtils.separateStringIntoLines(Utils.chat("&f> " + modifier.getActiveDescription()), 40));
                     }
                 }
