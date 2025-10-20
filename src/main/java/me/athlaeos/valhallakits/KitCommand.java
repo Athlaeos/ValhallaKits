@@ -2,7 +2,7 @@ package me.athlaeos.valhallakits;
 
 import me.athlaeos.valhallakits.config.ConfigManager;
 import me.athlaeos.valhallakits.menus.PlayerKitSelectionMenu;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallakits.menus.PlayerMenuUtilManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;

@@ -2,8 +2,7 @@ name: ValhallaKits
 version: ${revision}
 main: me.athlaeos.valhallakits.ValhallaKits
 api-version: 1.19
-depend: [ ValhallaMMO ]
-softdepend: [ Vault ]
+softdepend: [ Vault, ValhallaMMO ]
 authors: [ Athlaeos ]
 description: Simple plugin allowing the creation and distribution of kits, supporting custom items and hooking with ValhallaMMO to implement dynamic item modifiers
 commands:

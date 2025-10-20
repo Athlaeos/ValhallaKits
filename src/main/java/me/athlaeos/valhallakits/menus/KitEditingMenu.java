@@ -1,13 +1,8 @@
 package me.athlaeos.valhallakits.menus;
 
-import me.athlaeos.valhallakits.Kit;
-import me.athlaeos.valhallakits.KitManager;
-import me.athlaeos.valhallakits.Utils;
-import me.athlaeos.valhallakits.ValhallaKits;
+import me.athlaeos.valhallakits.*;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
-import me.athlaeos.valhallammo.gui.Menu;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.utility.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -69,9 +64,9 @@ public class KitEditingMenu extends Menu {
                 }
                 if (ValhallaKits.isValhallaHooked()){
                     if (!Utils.isItemEmptyOrNull(e.getCursor())){
-                        kit.getItems().put(name, new Kit.ValhallaKitEntry(name, e.getCursor().clone(), new ArrayList<>()));
+                        kit.getItems().put(name, new ValhallaKitEntry(name, e.getCursor().clone(), new ArrayList<>()));
                     } else {
-                        new ValhallaKitEntryEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, new Kit.ValhallaKitEntry(name, Utils.createItemStack(Material.WOODEN_SWORD, Utils.chat("&r&fPlace your own custom kit item here :)"), null), new ArrayList<>())).open();
+                        new ValhallaKitEntryEditingMenu(me.athlaeos.valhallammo.gui.PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), kit, new ValhallaKitEntry(name, Utils.createItemStack(Material.WOODEN_SWORD, Utils.chat("&r&fPlace your own custom kit item here :)"), null), new ArrayList<>())).open();
                     }
                 } else {
                     if (!Utils.isItemEmptyOrNull(e.getCursor())){
@@ -125,7 +120,7 @@ public class KitEditingMenu extends Menu {
                 if (ValhallaKits.isValhallaHooked()){
                     buttonLore.add(Utils.chat("&8&m                                 "));
                     buttonLore.add(Utils.chat("&fModifiers:"));
-                    Kit.ValhallaKitEntry asValhallaEntry = entry instanceof Kit.ValhallaKitEntry ? (Kit.ValhallaKitEntry) entry : new Kit.ValhallaKitEntry(entry.getId(), entry.getItem(), new ArrayList<>());
+                    ValhallaKitEntry asValhallaEntry = entry instanceof ValhallaKitEntry ? (ValhallaKitEntry) entry : new ValhallaKitEntry(entry.getId(), entry.getItem(), new ArrayList<>());
                     for (DynamicItemModifier modifier : asValhallaEntry.getModifiers()){
                         buttonLore.addAll(StringUtils.separateStringIntoLines(Utils.chat("&f> " + modifier.getActiveDescription()), 40));
                     }

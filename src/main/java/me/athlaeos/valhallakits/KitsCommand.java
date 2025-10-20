@@ -3,7 +3,7 @@ package me.athlaeos.valhallakits;
 import me.athlaeos.valhallakits.config.ConfigManager;
 import me.athlaeos.valhallakits.menus.KitEditingMenu;
 import me.athlaeos.valhallakits.menus.KitSelectionMenu;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
+import me.athlaeos.valhallakits.menus.PlayerMenuUtilManager;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

@@ -2,8 +2,6 @@ package me.athlaeos.valhallakits.menus;
 
 import me.athlaeos.valhallakits.*;
 import me.athlaeos.valhallakits.config.ConfigManager;
-import me.athlaeos.valhallammo.gui.Menu;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.ChatColor;

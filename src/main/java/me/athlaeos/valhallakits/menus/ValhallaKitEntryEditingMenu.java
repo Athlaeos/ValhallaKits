@@ -2,9 +2,9 @@ package me.athlaeos.valhallakits.menus;
 
 import me.athlaeos.valhallakits.Kit;
 import me.athlaeos.valhallakits.Utils;
+import me.athlaeos.valhallakits.ValhallaKitEntry;
 import me.athlaeos.valhallammo.crafting.dynamicitemmodifiers.DynamicItemModifier;
 import me.athlaeos.valhallammo.gui.Menu;
-import me.athlaeos.valhallammo.gui.PlayerMenuUtilManager;
 import me.athlaeos.valhallammo.gui.PlayerMenuUtility;
 import me.athlaeos.valhallammo.gui.SetModifiersMenu;
 import me.athlaeos.valhallammo.gui.implementations.DynamicModifierMenu;
@@ -41,7 +41,7 @@ public class ValhallaKitEntryEditingMenu extends Menu implements SetModifiersMen
         this.entry = entry;
         this.editingKit = editingKit;
         this.drop = entry.getItem();
-        this.currentModifiers = ((Kit.ValhallaKitEntry) entry).getModifiers();
+        this.currentModifiers = ((ValhallaKitEntry) entry).getModifiers();
     }
 
     @Override
@@ -71,7 +71,7 @@ public class ValhallaKitEntryEditingMenu extends Menu implements SetModifiersMen
                 new KitEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
                 return;
             } else if (clickedItem.equals(saveButton)){
-                editingKit.getItems().put(entry.getId(), new Kit.ValhallaKitEntry(entry.getId(), drop, currentModifiers));
+                editingKit.getItems().put(entry.getId(), new ValhallaKitEntry(entry.getId(), drop, currentModifiers));
                 new KitEditingMenu(PlayerMenuUtilManager.getPlayerMenuUtility(playerMenuUtility.getOwner()), editingKit).open();
                 return;
             } else if (clickedItem.equals(drop)) {

@@ -15,8 +15,8 @@
         ValhallaMMO to implement dynamic item modifiers
     </description>
     <properties>
-        <revision>2.2</revision>
-        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.7\plugins</testServerPath>
+        <revision>2.3</revision>
+        <testServerPath>C:\Users\Athlaeos\Desktop\Minecraft Servers\1.21.10\plugins</testServerPath>
 
         <outputDirectory>target</outputDirectory>
         <java.version>1.8</java.version>
